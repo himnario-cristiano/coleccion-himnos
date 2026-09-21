@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AudioHub | Premium Player</title>
-    <!-- Importar fuente profesional desde Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Media Player UI</title>
+    <!-- Importamos una fuente moderna (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-body: #0f172a; /* Fondo oscuro moderno */
-            --bg-card: #1e293b;
-            --bg-card-hover: #334155;
+            --bg-color: #0f172a; /* Azul muy oscuro */
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent: #10b981; /* Verde esmeralda tipo Spotify */
+            --accent: #3b82f6; /* Azul brillante */
+            --accent-hover: #60a5fa;
             --sidebar-width: 450px;
         }
 
@@ -22,130 +23,142 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 2rem;
+            padding: 3rem 2rem;
         }
 
-        /* Cabecera */
         header {
-            max-width: 1200px;
-            margin: 0 auto 3rem auto;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 1.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
         }
 
         header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
         }
 
         header p {
             color: var(--text-muted);
-            margin-top: 0.5rem;
             font-size: 1.1rem;
         }
 
-        /* Grid de Tarjetas */
+        /* --- Grid y Tarjetas --- */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* Diseño de la Tarjeta */
         .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
-        /* Contenedor de la Imagen */
-        .card-image-wrapper {
-            position: relative;
+        /* Contenedor de la Imagen (Soporta GIF y PNG) */
+        .card-img-wrapper {
             width: 100%;
-            aspect-ratio: 1 / 1;
-            border-radius: 12px;
+            height: 180px;
+            position: relative;
             overflow: hidden;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
-        .card-image-wrapper img {
+        .card-img-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Ajusta la imagen sin deformarla */
             transition: transform 0.5s ease;
         }
 
-        .card:hover .card-image-wrapper img {
-            transform: scale(1.08); /* Efecto zoom suave */
+        .card:hover .card-img-wrapper img {
+            transform: scale(1.08);
         }
 
-        /* Botón de Play Flotante */
-        .play-btn {
+        /* Botón de Play superpuesto */
+        .play-overlay {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            width: 48px;
-            height: 48px;
-            background-color: var(--accent);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-btn-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
         }
 
-        .card:hover .play-btn {
-            opacity: 1;
-            transform: translateY(0);
+        .card:hover .play-btn-icon {
+            transform: scale(1);
         }
 
-        .play-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: #000;
-            margin-left: 4px; /* Centrado visual del play */
+        .play-btn-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            margin-left: 4px; /* Centrar visualmente el triángulo */
         }
 
-        /* Textos de la tarjeta */
+        /* Contenido de la tarjeta */
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
         .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .card-desc {
-            font-size: 0.85rem;
             color: var(--text-muted);
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limitar a 2 líneas */
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         /* --- Panel Lateral (Sidebar) --- */
@@ -156,11 +169,11 @@
             width: var(--sidebar-width);
             max-width: 100vw;
             height: 100vh;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px); /* Efecto cristal (Glassmorphism) */
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-left: 1px solid rgba(255,255,255,0.1);
-            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Animación fluida */
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -171,26 +184,25 @@
         }
 
         .sidebar-header {
-            padding: 20px 24px;
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .sidebar-header h3 {
-            font-size: 1.2rem;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .close-btn {
             background: rgba(255,255,255,0.1);
             border: none;
-            width: 36px;
-            height: 36px;
+            color: white;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            color: #fff;
-            font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -209,18 +221,15 @@
             background: transparent;
         }
 
-        /* Capa de fondo oscura (Overlay) */
+        /* --- Capa Oscura (Overlay) --- */
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(4px);
             opacity: 0;
             visibility: hidden;
-            transition: 0.4s ease;
+            transition: all 0.4s ease;
             z-index: 999;
         }
 
@@ -228,120 +237,125 @@
             opacity: 1;
             visibility: visible;
         }
-
-        /* Diseño Responsivo */
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
-            .card-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-            .card { padding: 12px; }
-            .play-btn { width: 36px; height: 36px; bottom: 8px; right: 8px; }
-            .play-btn svg { width: 14px; height: 14px; }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>AudioHub</h1>
-        <p>Tu colección personal de sonidos y música.</p>
+        <h1>MyAudio Space</h1>
+        <p>Tu colección de pistas, podcasts y sonidos</p>
     </header>
 
-    <!-- Aquí se inyectarán las tarjetas desde JavaScript -->
-    <main class="card-grid" id="contenedorTarjetas">
-        <!-- Cargando... -->
-    </main>
+    <!-- Contenedor donde se inyectarán las tarjetas -->
+    <div class="card-grid" id="cardContainer"></div>
 
-    <!-- Overlay y Panel Lateral -->
+    <!-- Panel Lateral y Overlay -->
     <div class="overlay" id="overlay"></div>
     
-    <aside class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h3>Reproduciendo ahora</h3>
-            <button class="close-btn" id="closeBtn" title="Cerrar panel">&times;</button>
+            <h3>Reproductor Activo</h3>
+            <button class="close-btn" id="closeBtn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 1L1 13M1 1L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </div>
-        <!-- Iframe sin fondo para fusionarse con el sidebar -->
-        <iframe id="playerFrame" src="" allow="autoplay" allowtransparency="true"></iframe>
-    </aside>
+        <iframe id="playerFrame" src="" allow="autoplay"></iframe>
+    </div>
 
     <script>
-        const contenedorTarjetas = document.getElementById('contenedorTarjetas');
+        // --- BASE DE DATOS SIMULADA ---
+        // En GitHub Pages, esto equivale a tu archivo JSON. 
+        // Puedes agregar URLs de GIFs o PNGs libremente en "imagen".
+        const datosAudios = [
+            {
+                titulo: "Lofi Beats",
+                descripcion: "Música relajante con un GIF animado de fondo.",
+                imagen: "https://media.giphy.com/media/L0qTl8hl84CQVI0Tlu/giphy.gif", // URL de un GIF
+                url: "reproductor_lofi.html" // Tu archivo HTML o enlace
+            },
+            {
+                titulo: "Synthwave Retro",
+                descripcion: "Imagen PNG estática de alta calidad.",
+                imagen: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop", // URL de un PNG/JPG
+                url: "reproductor_synth.html"
+            },
+            {
+                titulo: "Podcast Tech",
+                descripcion: "Diseño limpio usando imágenes vectoriales o fotos.",
+                imagen: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2574&auto=format&fit=crop",
+                url: "reproductor_podcast.html"
+            },
+            {
+                titulo: "Naturaleza y Lluvia",
+                descripcion: "GIF animado de lluvia para mayor inmersión.",
+                imagen: "https://media.giphy.com/media/Il9f7ZhytEiI0/giphy.gif",
+                url: "reproductor_nature.html"
+            }
+        ];
+
+        // --- LÓGICA DE LA INTERFAZ ---
+        const cardContainer = document.getElementById('cardContainer');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
         const closeBtn = document.getElementById('closeBtn');
         const playerFrame = document.getElementById('playerFrame');
 
-        // SVG del icono de Play para inyectarlo en las tarjetas
-        const playIconSVG = `
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 5.14v14l11-7-11-7z"></path>
-            </svg>
-        `;
-
-        // Función para cargar los datos JSON
-        async function cargarAudios() {
-            try {
-                // En GitHub Pages, asegúrate de que datos.json esté en la misma carpeta
-                const respuesta = await fetch('datos.json');
-                const datos = await respuesta.json();
+        // Generar las tarjetas dinámicamente
+        function renderizarTarjetas() {
+            datosAudios.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
                 
-                // Limpiar el contenedor antes de agregar
-                contenedorTarjetas.innerHTML = '';
-
-                datos.forEach(item => {
-                    // Si no hay imagen, pone una por defecto
-                    const imagenSrc = item.imagen ? item.imagen : 'https://via.placeholder.com/400x400/2a2a2a/ffffff?text=Audio';
-
-                    const tarjeta = document.createElement('article');
-                    tarjeta.className = 'card';
-                    
-                    tarjeta.innerHTML = `
-                        <div class="card-image-wrapper">
-                            <img src="${imagenSrc}" alt="Portada de ${item.titulo}" loading="lazy">
-                            <div class="play-btn">
-                                ${playIconSVG}
+                // Estructura HTML de cada tarjeta
+                card.innerHTML = `
+                    <div class="card-img-wrapper">
+                        <img src="${item.imagen}" alt="${item.titulo}">
+                        <div class="play-overlay">
+                            <div class="play-btn-icon">
+                                <!-- Icono SVG de Play -->
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
                             </div>
                         </div>
-                        <div class="card-content">
-                            <h2 class="card-title">${item.titulo}</h2>
-                            <p class="card-desc">${item.descripcion}</p>
-                        </div>
-                    `;
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${item.titulo}</h2>
+                        <p class="card-desc">${item.descripcion}</p>
+                    </div>
+                `;
 
-                    // Al hacer clic, abre el reproductor
-                    tarjeta.addEventListener('click', () => openPlayer(item.url));
-                    contenedorTarjetas.appendChild(tarjeta);
-                });
-            } catch (error) {
-                console.error('Error cargando los datos:', error);
-                contenedorTarjetas.innerHTML = '<p style="color: #ef4444;">No se pudieron cargar los audios. Verifica que datos.json exista.</p>';
-            }
+                // Al hacer clic, abre el reproductor
+                card.addEventListener('click', () => openPlayer(item.url));
+                cardContainer.appendChild(card);
+            });
         }
 
-        // Funciones del reproductor y Sidebar
+        // Funciones del panel
         function openPlayer(url) {
             playerFrame.src = url;
             sidebar.classList.add('active');
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Evita que la página del fondo haga scroll
+            document.body.style.overflow = 'hidden'; // Evita el scroll de fondo
         }
 
         function closePlayer() {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restaura el scroll
+            document.body.style.overflow = ''; // Restaura el scroll
             
-            // Espera a que termine la animación css (400ms) para cortar el audio
-            setTimeout(() => { 
-                playerFrame.src = ''; 
-            }, 400);
+            // Retraso para que la animación termine antes de cortar el iframe
+            setTimeout(() => { playerFrame.src = ''; }, 400);
         }
 
-        // Eventos para cerrar
+        // Eventos de cierre
         closeBtn.addEventListener('click', closePlayer);
         overlay.addEventListener('click', closePlayer);
 
-        // Iniciar la carga al abrir la página
-        cargarAudios();
+        // Iniciar la creación de tarjetas
+        renderizarTarjetas();
     </script>
 </body>
 </html>
