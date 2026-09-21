@@ -1,0 +1,20 @@
+[
+    {
+        "imagen": "https://i.pinimg.com/originals/99/86/e1/9986e1e355c76db7a2bd8ba269a9e334.gif",
+        "titulo": "Lofi Chill Mix",
+        "descripcion": "Beats animados ideales para estudiar o programar.",
+        "url": "reproductor_lofi.html"
+    },
+    {
+        "imagen": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=500&q=80",
+        "titulo": "Podcast Ep. 01",
+        "descripcion": "Entrevista exclusiva sobre tecnología web.",
+        "url": "reproductor_podcast.html"
+    },
+    {
+        "imagen": "https://media.giphy.com/media/L0wGvIbzM4kZ6/giphy.gif",
+        "titulo": "Retro Synthwave",
+        "descripcion": "Viaje a los 80s con este mix en vivo.",
+        "url": "reproductor_synth.html"
+    }
+]
