@@ -1,9 +1,9 @@
 [
     {
-        "titulo": "Lofi Beats",
-        "descripcion": "Música relajante con un GIF animado de fondo.",
+        "titulo": "Himnario Cristiano",
+        "descripcion": "coleccion de 301 himnos clasicos.",
         "imagen": "https://media.giphy.com/media/L0qTl8hl84CQVI0Tlu/giphy.gif",
-        "url": "reproductor_lofi.html"
+        "url": "Himnario-cristiano.html"
     },
     {
         "titulo": "Synthwave Retro",
