@@ -288,8 +288,8 @@
 
     <header>
         <div class="header-text">
-            <h1>HIMNOS COLECCION</h1>
-            <p>Tu colección personal de Himnos Cantos y Alabanzas.</p>
+            <h1>HIMNOS COLECCIÓN</h1>
+            <p>Tu colección personal de Himnos, Cantos y Alabanzas.</p>
         </div>
         
         <!-- Botón de Instalación PWA -->
@@ -312,99 +312,7 @@
         </div>
         <iframe id="playerFrame" src="" allow="autoplay" allowtransparency="true"></iframe>
     </aside>
-<script>
-        // --- BASE DE DATOS SIMULADA ---
-        // En GitHub Pages, esto equivale a tu archivo JSON. 
-        // Puedes agregar URLs de GIFs o PNGs libremente en "imagen".
-        const datosAudios = [
-            {
-                titulo: "Lofi Beats",
-                descripcion: "Música relajante con un GIF animado de fondo.",
-                imagen: "https://media.giphy.com/media/L0qTl8hl84CQVI0Tlu/giphy.gif", // URL de un GIF
-                url: "reproductor_lofi.html" // Tu archivo HTML o enlace
-            },
-            {
-                titulo: "Synthwave Retro",
-                descripcion: "Imagen PNG estática de alta calidad.",
-                imagen: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop", // URL de un PNG/JPG
-                url: "reproductor_synth.html"
-            },
-            {
-                titulo: "Podcast Tech",
-                descripcion: "Diseño limpio usando imágenes vectoriales o fotos.",
-                imagen: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2574&auto=format&fit=crop",
-                url: "reproductor_podcast.html"
-            },
-            {
-                titulo: "Naturaleza y Lluvia",
-                descripcion: "GIF animado de lluvia para mayor inmersión.",
-                imagen: "https://media.giphy.com/media/Il9f7ZhytEiI0/giphy.gif",
-                url: "reproductor_nature.html"
-            }
-        ];
 
-        // --- LÓGICA DE LA INTERFAZ ---
-        const cardContainer = document.getElementById('cardContainer');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const closeBtn = document.getElementById('closeBtn');
-        const playerFrame = document.getElementById('playerFrame');
-
-        // Generar las tarjetas dinámicamente
-        function renderizarTarjetas() {
-            datosAudios.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                
-                // Estructura HTML de cada tarjeta
-                card.innerHTML = `
-                    <div class="card-img-wrapper">
-                        <img src="${item.imagen}" alt="${item.titulo}">
-                        <div class="play-overlay">
-                            <div class="play-btn-icon">
-                                <!-- Icono SVG de Play -->
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">${item.titulo}</h2>
-                        <p class="card-desc">${item.descripcion}</p>
-                    </div>
-                `;
-
-                // Al hacer clic, abre el reproductor
-                card.addEventListener('click', () => openPlayer(item.url));
-                cardContainer.appendChild(card);
-            });
-        }
-
-        // Funciones del panel
-        function openPlayer(url) {
-            playerFrame.src = url;
-            sidebar.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Evita el scroll de fondo
-        }
-
-        function closePlayer() {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = ''; // Restaura el scroll
-            
-            // Retraso para que la animación termine antes de cortar el iframe
-            setTimeout(() => { playerFrame.src = ''; }, 400);
-        }
-
-        // Eventos de cierre
-        closeBtn.addEventListener('click', closePlayer);
-        overlay.addEventListener('click', closePlayer);
-
-        // Iniciar la creación de tarjetas
-        renderizarTarjetas();
-    </script>
     <script>
         // --- 1. Lógica de la Interfaz y Datos ---
         const contenedorTarjetas = document.getElementById('contenedorTarjetas');
@@ -419,14 +327,17 @@
             </svg>
         `;
 
+        // Función para cargar desde el archivo JSON
         async function cargarAudios() {
             try {
+                // ASEGÚRATE de tener el archivo "datos.json" en la misma carpeta
                 const respuesta = await fetch('datos.json');
                 const datos = await respuesta.json();
                 
                 contenedorTarjetas.innerHTML = '';
 
                 datos.forEach(item => {
+                    // Imagen por defecto si no hay una en el JSON
                     const imagenSrc = item.imagen ? item.imagen : 'https://via.placeholder.com/800x600/2a2a2a/ffffff?text=Audio';
 
                     const tarjeta = document.createElement('article');
@@ -445,11 +356,13 @@
                         </div>
                     `;
 
+                    // Asignar el click
                     tarjeta.addEventListener('click', () => openPlayer(item.url));
                     contenedorTarjetas.appendChild(tarjeta);
                 });
             } catch (error) {
                 console.error('Error cargando los datos:', error);
+                contenedorTarjetas.innerHTML = '<p style="color: #ef4444;">No se pudieron cargar los himnos. Verifica que datos.json exista en tu repositorio.</p>';
             }
         }
 
@@ -469,6 +382,8 @@
 
         closeBtn.addEventListener('click', closePlayer);
         overlay.addEventListener('click', closePlayer);
+        
+        // Iniciar la carga
         cargarAudios();
 
         // --- 2. Lógica de PWA (Instalación y Service Worker) ---
@@ -477,18 +392,14 @@
 
         // Capturar el evento que permite la instalación
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevenir que el navegador muestre el aviso por defecto
             e.preventDefault();
-            // Guardar el evento para usarlo luego
             promptDiferido = e;
-            // Mostrar nuestro botón de instalación personalizado
             botonInstalar.style.display = 'flex';
         });
 
         // Acción al hacer clic en instalar
         botonInstalar.addEventListener('click', async () => {
             if (promptDiferido !== null) {
-                // Mostrar el prompt nativo del sistema
                 promptDiferido.prompt();
                 const { outcome } = await promptDiferido.userChoice;
                 if (outcome === 'accepted') {
@@ -496,14 +407,12 @@
                 } else {
                     console.log('El usuario rechazó la instalación');
                 }
-                // Limpiar la variable
                 promptDiferido = null;
-                // Ocultar el botón ya que se usó
                 botonInstalar.style.display = 'none';
             }
         });
 
-        // Registrar el Service Worker para habilitar funcionalidades PWA
+        // Registrar el Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(registro => {
