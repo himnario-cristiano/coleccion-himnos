@@ -1,0 +1,26 @@
+[
+    {
+                titulo: "Lofi Beats",
+                descripcion: "Música relajante con un GIF animado de fondo.",
+                imagen: "https://media.giphy.com/media/L0qTl8hl84CQVI0Tlu/giphy.gif", // URL de un GIF
+                url: "reproductor_lofi.html" // Tu archivo HTML o enlace
+            },
+            {
+                titulo: "Synthwave Retro",
+                descripcion: "Imagen PNG estática de alta calidad.",
+                imagen: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop", // URL de un PNG/JPG
+                url: "reproductor_synth.html"
+            },
+            {
+                titulo: "Podcast Tech",
+                descripcion: "Diseño limpio usando imágenes vectoriales o fotos.",
+                imagen: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=2574&auto=format&fit=crop",
+                url: "reproductor_podcast.html"
+            },
+            {
+                titulo: "Naturaleza y Lluvia",
+                descripcion: "GIF animado de lluvia para mayor inmersión.",
+                imagen: "https://media.giphy.com/media/Il9f7ZhytEiI0/giphy.gif",
+                url: "reproductor_nature.html"
+            }
+]
