@@ -3,12 +3,12 @@
         "titulo": "Himnario Cristiano",
         "descripcion": "Coleccion de 301 himnos clasicos.",
         "imagen": "https://i.postimg.cc/SshphZG7/libro-3d-animado-(3).gif",
-        "url": "himnario-cristiano.html"
+        "url": "https://himnario-cristiano.github.io/himnariocristiano/"
     },
     {
         "titulo": "Synthwave Retro",
         "descripcion": "Imagen PNG estática de alta calidad.",
         "imagen": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-        "url": "reproductor_synth.html"
+        "url": "https://himnario-cristiano.github.io/himnariocristiano/"
     }
 ]
