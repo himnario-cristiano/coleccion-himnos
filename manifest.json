@@ -1,6 +1,6 @@
 { 
-  "name": "Hymnaly",
-  "short_name": "Hymnaly",
+  "name": "HymnOS",
+  "short_name": "HymnOS",
   "description": "Tu colección de Himnarios con Himnos, Cantos y Alabanzas.",
   "start_url": "./index.html",
   "display": "standalone",
