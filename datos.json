@@ -15,6 +15,12 @@
         "titulo": "Cantos Espirituales",
         "descripcion": "Coleccion de 249 himnos clasicos.",
         "imagen": "https://i.postimg.cc/0Qyt04XH/cantosespirituales-libro.gif",
-        "url": "https://himnario-cristiano.github.io/cantosespirituales/index1.html"
+        "url": "https://himnario-cristiano.github.io/cantosespirituales/"
+    },
+    {
+        "titulo": "El Me Liberó",
+        "descripcion": "Coleccion de 13 himnos contemporaneo.",
+        "imagen": "https://i.postimg.cc/D0T3fW9R/el-me-libero-libro.gif",
+        "url": "https://himnario-cristiano.github.io/elmelibero/"
     }
 ]
