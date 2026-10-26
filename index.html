@@ -93,7 +93,7 @@
             outline: none;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            appearance: none; /* Oculta la flecha por defecto en algunos navegadores */
+            appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 12px center;
@@ -396,13 +396,13 @@
         </div>
         
         <div class="header-actions">
-            <!-- Nuevo Filtro Select -->
+            <!-- Filtro Select por Título -->
             <select id="filtroSelect" class="custom-select">
-                <option value="todos">Todos los Himnos</option>
-                <!-- Las opciones se generarán por JS -->
+                <option value="todos">Todos los Himnarios</option>
+                <!-- Las opciones se generarán por JS basadas en el 'titulo' -->
             </select>
 
-            <!-- Nuevo Botón Limpiar Cache / Recargar -->
+            <!-- Botón Limpiar Cache / Recargar -->
             <button id="clearDataBtn" class="icon-btn" title="Limpiar caché y recargar la página">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.65 6.35A7.95 7.95 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
@@ -444,7 +444,7 @@
         const filtroSelect = document.getElementById('filtroSelect');
         const clearDataBtn = document.getElementById('clearDataBtn');
 
-        let todosLosAudios = []; // Variable global para guardar los datos
+        let todosLosAudios = []; 
 
         const playIconSVG = `
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -452,18 +452,17 @@
             </svg>
         `;
 
-        // Función para cargar desde el archivo JSON
         async function cargarAudios() {
             try {
                 const respuesta = await fetch('datos.json');
                 todosLosAudios = await respuesta.json();
                 
-                // Obtener categorías únicas del JSON y poblar el select
-                const categorias = [...new Set(todosLosAudios.map(item => item.categoria).filter(Boolean))];
-                categorias.forEach(cat => {
+                // Extraer los TÍTULOS únicos del JSON y poblar el select
+                const titulos = [...new Set(todosLosAudios.map(item => item.titulo).filter(Boolean))];
+                titulos.forEach(titulo => {
                     const option = document.createElement('option');
-                    option.value = cat;
-                    option.textContent = cat;
+                    option.value = titulo;
+                    option.textContent = titulo;
                     filtroSelect.appendChild(option);
                 });
 
@@ -474,12 +473,11 @@
             }
         }
 
-        // Función encargada exclusivamente de dibujar las tarjetas
         function renderizarTarjetas(datos) {
             contenedorTarjetas.innerHTML = '';
             
             if (datos.length === 0) {
-                contenedorTarjetas.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1;">No hay himnos en esta categoría.</p>';
+                contenedorTarjetas.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1;">No se encontraron resultados.</p>';
                 return;
             }
 
@@ -507,37 +505,32 @@
             });
         }
 
-        // Evento para filtrar
+        // Evento para filtrar usando el TITULO
         filtroSelect.addEventListener('change', (e) => {
-            const categoriaSeleccionada = e.target.value;
+            const tituloSeleccionado = e.target.value;
             
-            if (categoriaSeleccionada === 'todos') {
+            if (tituloSeleccionado === 'todos') {
                 renderizarTarjetas(todosLosAudios);
             } else {
-                const filtrados = todosLosAudios.filter(item => item.categoria === categoriaSeleccionada);
+                const filtrados = todosLosAudios.filter(item => item.titulo === tituloSeleccionado);
                 renderizarTarjetas(filtrados);
             }
         });
 
         // Evento para limpiar cookies y recargar
         clearDataBtn.addEventListener('click', () => {
-            // 1. Limpiar todas las cookies de este dominio
             document.cookie.split(";").forEach((c) => {
                 document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
 
-            // 2. Limpiar cache de la PWA/ServiceWorker
             if ('caches' in window) {
                 caches.keys().then((nombres) => {
                     nombres.forEach(nombre => caches.delete(nombre));
                 });
             }
 
-            // 3. Limpiar almacenamiento local y de sesión
             localStorage.clear();
             sessionStorage.clear();
-
-            // 4. Forzar una recarga limpia
             window.location.reload(true);
         });
 
@@ -558,7 +551,6 @@
         closeBtn.addEventListener('click', closePlayer);
         overlay.addEventListener('click', closePlayer);
         
-        // Iniciar la carga
         cargarAudios();
 
         // --- 2. Lógica para Redimensionar Panel Lateral (Escritorio) ---
@@ -609,8 +601,6 @@
                 const { outcome } = await promptDiferido.userChoice;
                 if (outcome === 'accepted') {
                     console.log('El usuario aceptó la instalación');
-                } else {
-                    console.log('El usuario rechazó la instalación');
                 }
                 promptDiferido = null;
                 botonInstalar.style.display = 'none';
