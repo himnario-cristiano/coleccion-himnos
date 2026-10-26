@@ -28,5 +28,11 @@
         "descripcion": "Coleccion de 10 himnos contemporaneo.",
         "imagen": "https://i.postimg.cc/44rrZ7z8/bienvenido-cd-libro.gif",
         "url": "https://himnario-cristiano.github.io/bienvenidoseanhoy/"
+    },
+    {
+        "titulo": "Resucitaré",
+        "descripcion": "Coleccion de 12 himnos contemporaneo.",
+        "imagen": "https://i.postimg.cc/1XN2wsZk/resucitare-cd-libro.gif",
+        "url": "https://himnario-cristiano.github.io/resucitare/"
     }
 ]
