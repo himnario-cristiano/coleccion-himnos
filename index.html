@@ -44,7 +44,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Cabecera con Botón de Instalación */
+        /* Cabecera con Controles */
         header {
             max-width: 1400px;
             margin: 0 auto 3rem auto;
@@ -71,6 +71,66 @@
             margin-top: 0.5rem;
             font-size: 1.1rem;
             font-weight: 300;
+        }
+        
+        /* Contenedor de Botones y Filtros */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Estilos del Select (Filtro) */
+        .custom-select {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-card);
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none; /* Oculta la flecha por defecto en algunos navegadores */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .custom-select:focus, .custom-select:hover {
+            border-color: var(--accent);
+        }
+
+        /* Botón de Limpiar Datos / Recargar */
+        .icon-btn {
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border-card);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background-color: var(--bg-card-hover);
+            transform: rotate(90deg);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         /* Botón Instalar PWA */
@@ -215,7 +275,7 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
-            transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Ancho es modificado por JS sin transición para no laggear */
+            transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -284,7 +344,7 @@
             border: none;
             background: transparent;
         }
- 
+
         .overlay {
             position: fixed;
             top: 0;
@@ -311,20 +371,19 @@
             .card-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
             .card { padding: 12px; border-radius: 16px; }
             
-            /* Botón visible siempre en táctil ya que no hay hover */
             .play-btn { opacity: 1; width: 44px; height: 44px; bottom: 10px; right: 10px; transform: none; }
             .play-btn svg { width: 18px; height: 18px; }
             
-            /* Sidebar a pantalla completa en móviles */
             .sidebar { 
-                width: 100% !important; /* Importante para sobreescribir el estilo en línea del JS de resize */
+                width: 100% !important; 
                 height: 100%;
                 border-left: none;
             }
             .sidebar-header { padding: 10px 5px; }
-            
-            /* Ocultar resizer en móviles porque ocupará todo el ancho */
             .resizer { display: none; }
+            
+            .header-actions { width: 100%; justify-content: space-between; }
+            .custom-select { flex-grow: 1; }
         }
     </style>
 </head>
@@ -336,13 +395,28 @@
             <p>Tu colección de Himnarios con Himnos, Cantos y Alabanzas.</p>
         </div>
         
-        <!-- Botón de Instalación PWA -->
-        <button id="installBtn" class="install-btn">
-            <svg viewBox="0 0 24 24">
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-            </svg>
-            Instalar App
-        </button>
+        <div class="header-actions">
+            <!-- Nuevo Filtro Select -->
+            <select id="filtroSelect" class="custom-select">
+                <option value="todos">Todos los Himnos</option>
+                <!-- Las opciones se generarán por JS -->
+            </select>
+
+            <!-- Nuevo Botón Limpiar Cache / Recargar -->
+            <button id="clearDataBtn" class="icon-btn" title="Limpiar caché y recargar la página">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.65 6.35A7.95 7.95 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+            </button>
+
+            <!-- Botón de Instalación PWA -->
+            <button id="installBtn" class="install-btn">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                Instalar App
+            </button>
+        </div>
     </header>
 
     <main class="card-grid" id="contenedorTarjetas"></main>
@@ -350,7 +424,6 @@
     <div class="overlay" id="overlay"></div>
     
     <aside class="sidebar" id="sidebar">
-        <!-- Div para arrastrar y cambiar tamaño -->
         <div class="resizer" id="resizer"></div>
         
         <div class="sidebar-header">
@@ -368,6 +441,10 @@
         const closeBtn = document.getElementById('closeBtn');
         const playerFrame = document.getElementById('playerFrame');
         const resizer = document.getElementById('resizer');
+        const filtroSelect = document.getElementById('filtroSelect');
+        const clearDataBtn = document.getElementById('clearDataBtn');
+
+        let todosLosAudios = []; // Variable global para guardar los datos
 
         const playIconSVG = `
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -379,37 +456,90 @@
         async function cargarAudios() {
             try {
                 const respuesta = await fetch('datos.json');
-                const datos = await respuesta.json();
+                todosLosAudios = await respuesta.json();
                 
-                contenedorTarjetas.innerHTML = '';
-
-                datos.forEach(item => {
-                    const imagenSrc = item.imagen ? item.imagen : 'https://via.placeholder.com/800x600/1e293b/94a3b8?text=Audio';
-
-                    const tarjeta = document.createElement('article');
-                    tarjeta.className = 'card';
-                    
-                    tarjeta.innerHTML = `
-                        <div class="card-image-wrapper">
-                            <img src="${imagenSrc}" alt="Portada" loading="lazy">
-                            <div class="play-btn">
-                                ${playIconSVG}
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <h2 class="card-title">${item.titulo}</h2>
-                            <p class="card-desc">${item.descripcion}</p>
-                        </div>
-                    `;
-
-                    tarjeta.addEventListener('click', () => openPlayer(item.url));
-                    contenedorTarjetas.appendChild(tarjeta);
+                // Obtener categorías únicas del JSON y poblar el select
+                const categorias = [...new Set(todosLosAudios.map(item => item.categoria).filter(Boolean))];
+                categorias.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    filtroSelect.appendChild(option);
                 });
+
+                renderizarTarjetas(todosLosAudios);
             } catch (error) {
                 console.error('Error cargando los datos:', error);
                 contenedorTarjetas.innerHTML = '<p style="color: #ef4444; grid-column: 1 / -1;">No se pudieron cargar los himnos. Verifica que datos.json exista en tu repositorio.</p>';
             }
         }
+
+        // Función encargada exclusivamente de dibujar las tarjetas
+        function renderizarTarjetas(datos) {
+            contenedorTarjetas.innerHTML = '';
+            
+            if (datos.length === 0) {
+                contenedorTarjetas.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1;">No hay himnos en esta categoría.</p>';
+                return;
+            }
+
+            datos.forEach(item => {
+                const imagenSrc = item.imagen ? item.imagen : 'https://via.placeholder.com/800x600/1e293b/94a3b8?text=Audio';
+
+                const tarjeta = document.createElement('article');
+                tarjeta.className = 'card';
+                
+                tarjeta.innerHTML = `
+                    <div class="card-image-wrapper">
+                        <img src="${imagenSrc}" alt="Portada" loading="lazy">
+                        <div class="play-btn">
+                            ${playIconSVG}
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${item.titulo}</h2>
+                        <p class="card-desc">${item.descripcion}</p>
+                    </div>
+                `;
+
+                tarjeta.addEventListener('click', () => openPlayer(item.url));
+                contenedorTarjetas.appendChild(tarjeta);
+            });
+        }
+
+        // Evento para filtrar
+        filtroSelect.addEventListener('change', (e) => {
+            const categoriaSeleccionada = e.target.value;
+            
+            if (categoriaSeleccionada === 'todos') {
+                renderizarTarjetas(todosLosAudios);
+            } else {
+                const filtrados = todosLosAudios.filter(item => item.categoria === categoriaSeleccionada);
+                renderizarTarjetas(filtrados);
+            }
+        });
+
+        // Evento para limpiar cookies y recargar
+        clearDataBtn.addEventListener('click', () => {
+            // 1. Limpiar todas las cookies de este dominio
+            document.cookie.split(";").forEach((c) => {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+
+            // 2. Limpiar cache de la PWA/ServiceWorker
+            if ('caches' in window) {
+                caches.keys().then((nombres) => {
+                    nombres.forEach(nombre => caches.delete(nombre));
+                });
+            }
+
+            // 3. Limpiar almacenamiento local y de sesión
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 4. Forzar una recarga limpia
+            window.location.reload(true);
+        });
 
         function openPlayer(url) {
             playerFrame.src = url;
@@ -438,16 +568,13 @@
             isResizing = true;
             document.body.style.cursor = 'ew-resize';
             resizer.classList.add('active-resize');
-            // Evitar que el iframe "robe" los eventos del mouse al arrastrar rápido
             playerFrame.style.pointerEvents = 'none';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isResizing) return;
-            // Calculamos el nuevo ancho en base a la posición del mouse desde la derecha
             let newWidth = window.innerWidth - e.clientX;
             
-            // Restricciones: Mínimo 320px, Máximo 60% del ancho de la pantalla
             const minWidth = 320;
             const maxWidth = window.innerWidth * 0.6;
             
@@ -462,7 +589,6 @@
                 isResizing = false;
                 document.body.style.cursor = 'default';
                 resizer.classList.remove('active-resize');
-                // Devolverle los eventos al iframe
                 playerFrame.style.pointerEvents = 'auto';
             }
         });
