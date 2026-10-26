@@ -22,5 +22,11 @@
         "descripcion": "Coleccion de 13 himnos contemporaneo.",
         "imagen": "https://i.postimg.cc/D0T3fW9R/el-me-libero-libro.gif",
         "url": "https://himnario-cristiano.github.io/elmelibero/"
+    },
+    {
+        "titulo": "Bienvenido (Remasterizado)",
+        "descripcion": "Coleccion de 10 himnos contemporaneo.",
+        "imagen": "https://i.postimg.cc/44rrZ7z8/bienvenido-cd-libro.gif",
+        "url": "https://himnario-cristiano.github.io/bienvenidoseanhoy/"
     }
 ]
