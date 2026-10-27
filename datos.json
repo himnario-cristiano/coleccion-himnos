@@ -34,5 +34,11 @@
         "descripcion": "Coleccion de 12 himnos contemporaneo.",
         "imagen": "https://i.postimg.cc/1XN2wsZk/resucitare-cd-libro.gif",
         "url": "https://himnario-cristiano.github.io/resucitare/"
+    },
+    {
+        "titulo": "En Vivo",
+        "descripcion": "Coleccion de 17 himnos contemporaneo.",
+        "imagen": "https://i.postimg.cc/jjcMFpk6/en-vivo-libro.gif",
+        "url": "https://himnario-cristiano.github.io/envivo/"
     }
 ]
