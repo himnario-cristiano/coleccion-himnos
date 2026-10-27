@@ -40,5 +40,11 @@
         "descripcion": "Coleccion de 17 himnos contemporaneo.",
         "imagen": "https://i.postimg.cc/jjcMFpk6/en-vivo-libro.gif",
         "url": "https://himnario-cristiano.github.io/envivo/"
+    },
+    {
+        "titulo": "Canta y Alegrate Hoy",
+        "descripcion": "Coleccion de 14 himnos contemporaneo.",
+        "imagen": "https://i.postimg.cc/t4qzKSQG/Canta-y-alegrate-libro.gif",
+        "url": "https://himnario-cristiano.github.io/cantayalegrate/"
     }
 ]
