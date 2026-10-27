@@ -304,10 +304,11 @@
         }
 
         .sidebar-header {
-            padding: 10px 5px;
+            padding: 10px 15px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centra el título de forma estricta */
             align-items: center;
+            position: relative; /* Permite que el botón sea absoluto respecto a este contenedor */
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
@@ -315,16 +316,19 @@
             font-size: 1.25rem;
             font-weight: 500;
             color: #fff;
+            margin: 0;
         }
 
         .close-btn {
+            position: absolute;
+            left: 10px; /* Fija el botón al lado izquierdo */
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             width: 30px;
             height: 30px;
             border-radius: 50%;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -335,7 +339,7 @@
         .close-btn:hover {
             background: #ef4444;
             border-color: #ef4444;
-            transform: rotate(90deg);
+            transform: translateX(4px); /* Desliza la flecha sutilmente en lugar de rotarla */
         }
 
         #playerFrame {
@@ -427,8 +431,9 @@
         <div class="resizer" id="resizer"></div>
         
         <div class="sidebar-header">
+            <!-- Flecha apuntando a la derecha indicando por dónde se cierra -->
+            <button class="close-btn" id="closeBtn" title="Cerrar panel">&#8594;</button>
             <h3>Reproductor</h3>
-            <button class="close-btn" id="closeBtn" title="Cerrar panel">&times;</button>
         </div>
         <iframe id="playerFrame" src="" allow="autoplay" allowtransparency="true"></iframe>
     </aside>
