@@ -1,6 +1,6 @@
 { 
-  "name": "HymnOS",
-  "short_name": "HymnOS",
+  "name": "Himnodix",
+  "short_name": "Himnodix",
   "description": "Tu colección de Himnarios con Himnos, Cantos y Alabanzas.",
   "start_url": "./index.html",
   "display": "standalone",
